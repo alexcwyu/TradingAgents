@@ -53,10 +53,13 @@ dependencies = [
     "yfinance>=0.2.66",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "pytest>=8.3.4",
+    "pytest>=9.0",
 ]
+
+[tool.uv]
+default-groups = ["dev"]
 
 [project.urls]
 Homepage = "https://github.com/TauricResearch/TradingAgents"
@@ -66,20 +69,44 @@ Repository = "https://github.com/TauricResearch/TradingAgents"
 tradingagents = "cli.main:app"
 
 [tool.hatch.build.targets.wheel]
-packages = ["tradingagents", "cli"]
+packages = ["src/tradingagents", "src/cli"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "tradingagents/**",
-    "cli/**",
+    "src/tradingagents/**",
+    "src/cli/**",
     "README.md",
     "LICENSE",
-    "requirements.txt",
 ]
 exclude = [
     "tests/**",
     "assets/**",
 ]
 
-[tool.uv.sources]
-backtrader = { workspace = true }
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "UP", "B", "SIM", "C4", "RUF", "PERF", "TC", "PTH"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["tradingagents"]
+
+[tool.pyright]
+pythonVersion = "3.13"
+typeCheckingMode = "basic"
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+addopts = ["-ra", "-q", "--strict-markers", "--import-mode=importlib"]
+testpaths = ["tests"]
+pythonpath = ["src"]
+xfail_strict = true
+filterwarnings = ["error"]
+
