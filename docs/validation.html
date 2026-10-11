@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Validation evidence: TradingAgents</title><style>
+:root{color-scheme:light dark;--bg:#f6f8fa;--paper:#fff;--fg:#182332;--muted:#526274;--line:#d9e0e7;--accent:#1769aa}
+@media(prefers-color-scheme:dark){:root{--bg:#111820;--paper:#192330;--fg:#e6edf3;--muted:#a0b3c5;--line:#344354;--accent:#71b7ee}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,sans-serif}
+header{border-bottom:1px solid var(--line);padding:16px max(24px,calc((100vw - 1120px)/2));background:var(--paper);font-size:14px}
+main{max-width:1120px;margin:32px auto;padding:40px 48px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+h1,h2,h3,h4{line-height:1.3;scroll-margin-top:24px}h1{font-size:2.1rem}h2{margin-top:2.5em;border-bottom:1px solid var(--line);padding-bottom:.35em}h3{margin-top:1.8em}
+a{color:var(--accent);text-underline-offset:3px}code{font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--bg);border-radius:4px;padding:2px 5px}pre{overflow:auto;border:1px solid var(--line);background:var(--bg);padding:16px;border-radius:7px}pre code{padding:0;background:none}
+table{border-collapse:collapse;width:100%;display:block;overflow-x:auto;font-size:14px}th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}th{background:var(--bg)}blockquote{border-left:4px solid var(--accent);margin:16px 0;padding:4px 20px;color:var(--muted)}
+.diagram{overflow-x:auto;margin:24px 0;padding:20px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#182332}.mermaid{border:0;background:none;text-align:center}.mermaid svg{height:auto;max-width:100%}details{font-size:13px;color:#526274}.headerlink{margin-left:.4em;font-size:.7em;text-decoration:none;color:var(--muted)}
+@media(max-width:740px){main{margin:0;padding:24px 18px;border:0;border-radius:0}h1{font-size:1.7rem}.diagram{padding:8px}}
+@media print{header,details,.headerlink{display:none}body,main{background:#fff;color:#000;border:0;margin:0;padding:0}a{color:#000}.diagram,pre{break-inside:avoid}}
+</style></head><body><header>Engineering documentation · <a href="validation.md">Markdown source</a></header><main><h1 id="validation-evidence-tradingagents">Validation evidence: TradingAgents<a class="headerlink" href="#validation-evidence-tradingagents" title="Permanent link">&para;</a></h1>
+<p>Run date: 2026-10-12. Branch: <code>feature/ayu_develop</code>. Interpreter: <code>3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lock</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>compile</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>build</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>tests</td>
+<td>passed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="current-result-and-compatibility-decisions">Current result and compatibility decisions<a class="headerlink" href="#current-result-and-compatibility-decisions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The upstream graph/vendor/CLI refactor is retained under src. Setuptools dynamic version metadata matches the existing version test and ships CLI assets.</li>
+<li>Cache retry uses the portable EDEADLK errno alias; existing errno and i18n path cases were updated without adding cases.</li>
+<li>Python 3.15 actual source build rejects ormsgpack 1.12.2: its PyO3 0.27.2 declares maximum Python 3.14.</li>
+</ul>
+<p>Current unresolved checks:</p>
+<p>All supplied checks recorded below passed.</p>
+<h2 id="latest-full-suite-output">Latest full-suite output<a class="headerlink" href="#latest-full-suite-output" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">....                         [ 55%]
+tests/test_openai_reasoning_effort.py .................                  [ 56%]
+tests/test_openrouter_model_select.py ..........                         [ 57%]
+tests/test_polymarket.py ........                                        [ 58%]
+tests/test_portfolio_context.py ....................                     [ 59%]
+tests/test_post_screen.py ..............................                 [ 62%]
+tests/test_prompt_integrity.py .............                             [ 63%]
+tests/test_provider_registry.py .................                        [ 64%]
+tests/test_rating_integrity.py ......................................... [ 67%]
+..................                                                       [ 69%]
+tests/test_reddit_fallback.py .................................          [ 71%]
+tests/test_report_html.py ..............                                 [ 73%]
+tests/test_reporting.py ..........                                       [ 73%]
+tests/test_risk_router_path_map.py ..................                    [ 75%]
+tests/test_safe_ticker_component.py ........                             [ 75%]
+tests/test_sec_edgar.py ........................                         [ 77%]
+tests/test_signal_processing.py .............                            [ 78%]
+tests/test_social_lookahead.py ...............                           [ 79%]
+tests/test_statement_knowledge_time.py ..........                        [ 80%]
+tests/test_stocktwits_resilience.py ................                     [ 82%]
+tests/test_structured_agent_prompts.py .......                           [ 82%]
+tests/test_structured_agents.py ........................................ [ 85%]
+..                                                                       [ 85%]
+tests/test_suite_isolation.py .........                                  [ 86%]
+tests/test_symbol_normalization_paths.py ...                             [ 86%]
+tests/test_symbols.py ..................                                 [ 88%]
+tests/test_temperature_config.py ...........                             [ 89%]
+tests/test_ticker_symbol_handling.py ...                                 [ 89%]
+tests/test_tier_providers.py .....                                       [ 89%]
+tests/test_tool_date_enforcement.py .................................... [ 92%]
+.....                                                                    [ 93%]
+tests/test_undated_tools_as_of.py ........................               [ 94%]
+tests/test_vendor_errors.py .......                                      [ 95%]
+tests/test_vendor_routing.py .......                                     [ 96%]
+tests/test_version.py .                                                  [ 96%]
+tests/test_yahoo_rate_limit.py .....................................     [ 99%]
+tests/test_yahoo_snapshot.py ......                                      [ 99%]
+tests/test_yfinance_stale_ohlcv_guard.py ......                          [100%]
+
+=============================== warnings summary ===============================
+tests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-haiku-5-0]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-haiku-5-0' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-haiku-4-7-preview]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-haiku-4-7-preview' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-sonnet-4-5]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-4-5' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-sonnet-4-0]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-4-0' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_current_opus_and_sonnet_receive_effort[claude-opus-4-5]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-opus-4-5' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_current_opus_and_sonnet_receive_effort[claude-opus-4-6]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-opus-4-6' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_current_opus_and_sonnet_receive_effort[claude-sonnet-4-6]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-4-6' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_future_opus_sonnet_inherit_effort_via_pattern[claude-opus-5-0]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-opus-5-0' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_future_opus_sonnet_inherit_effort_via_pattern[claude-sonnet-5-0]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-5-0' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_claude_5_family_receives_effort[claude-mythos-5]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-mythos-5' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_mythos_preview_receives_effort
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-mythos-preview' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_anthropic_effort.py::TestEffortGate::test_unknown_anthropic_model_does_not_receive_effort
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-experimental-x' is not in the known model list for provider 'anthropic'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_google_thinking_level.py::test_latest_alias_remaps_minimal_to_low[gemini-flash-latest]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/google_client.py:46: RuntimeWarning: Model 'gemini-flash-latest' is not in the known model list for provider 'google'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_google_thinking_level.py::test_latest_alias_remaps_minimal_to_low[gemini-pro-latest]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/google_client.py:46: RuntimeWarning: Model 'gemini-pro-latest' is not in the known model list for provider 'google'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_ollama_base_url.py::test_resolver_does_not_affect_other_providers
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'm' is not in the known model list for provider 'xai'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_ollama_base_url.py::test_resolver_does_not_affect_other_providers
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'm' is not in the known model list for provider 'deepseek'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_openai_reasoning_effort.py::test_non_reasoning_model_drops_effort
+tests/test_temperature_config.py::TestTemperatureForwarding::test_temperature_reaches_client_when_set[openai-gpt-4.1]
+tests/test_temperature_config.py::TestTemperatureForwarding::test_temperature_omitted_leaves_provider_default
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'gpt-4.1' is not in the known model list for provider 'openai'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+tests/test_temperature_config.py::TestTemperatureForwarding::test_temperature_reaches_client_when_set[deepseek-deepseek-chat]
+  /Users/alex/workspaces/trading/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'deepseek-chat' is not in the known model list for provider 'deepseek'. Continuing anyway.
+    self.warn_if_unknown_model()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_deepseek_reasoning.py:209: DEEPSEEK_API_KEY not set (or placeholder); skipping live API call
+================ 1263 passed, 1 skipped, 20 warnings in 25.97s =================
+
+</code></pre>
+<h2 id="exact-commands-and-exit-codes">Exact commands and exit codes<a class="headerlink" href="#exact-commands-and-exit-codes" title="Permanent link">&para;</a></h2>
+<p>Unsuccessful rows are retained as historical compatibility attempts; they are not claims that a current passing check remains blocked. Source-build probes use isolated temporary copies to preserve the selected repository environment.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th style="text-align: right;">Exit</th>
+<th style="text-align: right;">Seconds</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv lock --upgrade --python 3.15</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.48</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-lock-3.15.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv sync --all-extras --all-groups --python 3.15 --no-build --no-install-project</code></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3.38</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-wheel-probe-3.15.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv lock --upgrade --python 3.14</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.28</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-lock-3.14.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv sync --all-extras --all-groups --python 3.14 --no-build --no-install-project</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.56</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-wheel-probe-3.14.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv sync --all-extras --all-groups --python 3.14</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.21</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-sync-3.14.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv build --python 3.14</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5.81</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-build.log">log</a></td>
+</tr>
+<tr>
+<td><code>/Users/alex/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14 -m compileall -q src</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-compile.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv run --no-sync python -m pytest</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">37.1</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-tests.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv run --no-sync python -m compileall -q src</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.13</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-compile-final.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv build --python 3.14</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.15</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-build-final.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv run --no-sync python -c import sys,importlib.metadata,json; print(sys.version); print(json.dumps({d.metadata["Name"]: d.version for d in importlib.metadata.distributions()},indent=2,sort_keys=True))</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.19</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-versions-final.log">log</a></td>
+</tr>
+<tr>
+<td><code>uv sync --directory /tmp/trading-python315-probes/TradingAgents --all-extras --all-groups --python 3.15</code></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36.06</td>
+<td><a href="../../docs/maintenance-2026-10-12/TradingAgents-python315-source-probe.log">log</a></td>
+</tr>
+</tbody>
+</table>
+<p>The versions-final log records the exact interpreter patch release and every installed dependency version. The machine-readable <a href="../../docs/maintenance-2026-10-12/TradingAgents-result.json">result</a> includes branch/default ancestry, status, artifacts and unresolved checks.</p>
+<h2 id="dependency-floor-refresh">Dependency floor refresh<a class="headerlink" href="#dependency-floor-refresh" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setuptools&gt;=80.9.0</code></td>
+<td><code>setuptools&gt;=84.0.0</code></td>
+</tr>
+<tr>
+<td><code>wheel&gt;=0.45.1</code></td>
+<td><code>wheel&gt;=0.48.0</code></td>
+</tr>
+</tbody>
+</table>
+<p>The table records the initial metadata refresh. Later compatibility constraints and vendor sources are explained above and the final authoritative requirements are in <a href="../pyproject.toml">pyproject.toml</a> and <a href="../uv.lock">uv.lock</a>. No test cases were added, removed or disabled. Existing deprecated-API cases retain their assertions while explicitly checking the documented warning.</p></main>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,securityLevel:'strict',theme:'default',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});
+</script></body></html>

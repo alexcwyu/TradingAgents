@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Current uv development workflow</title><style>
+:root{color-scheme:light dark;--bg:#f6f8fa;--paper:#fff;--fg:#182332;--muted:#526274;--line:#d9e0e7;--accent:#1769aa}
+@media(prefers-color-scheme:dark){:root{--bg:#111820;--paper:#192330;--fg:#e6edf3;--muted:#a0b3c5;--line:#344354;--accent:#71b7ee}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,-apple-system,sans-serif}
+header{border-bottom:1px solid var(--line);padding:16px max(24px,calc((100vw - 1120px)/2));background:var(--paper);font-size:14px}
+main{max-width:1120px;margin:32px auto;padding:40px 48px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+h1,h2,h3,h4{line-height:1.3;scroll-margin-top:24px}h1{font-size:2.1rem}h2{margin-top:2.5em;border-bottom:1px solid var(--line);padding-bottom:.35em}h3{margin-top:1.8em}
+a{color:var(--accent);text-underline-offset:3px}code{font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--bg);border-radius:4px;padding:2px 5px}pre{overflow:auto;border:1px solid var(--line);background:var(--bg);padding:16px;border-radius:7px}pre code{padding:0;background:none}
+table{border-collapse:collapse;width:100%;display:block;overflow-x:auto;font-size:14px}th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}th{background:var(--bg)}blockquote{border-left:4px solid var(--accent);margin:16px 0;padding:4px 20px;color:var(--muted)}
+.diagram{overflow-x:auto;margin:24px 0;padding:20px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#182332}.mermaid{border:0;background:none;text-align:center}.mermaid svg{height:auto;max-width:100%}details{font-size:13px;color:#526274}.headerlink{margin-left:.4em;font-size:.7em;text-decoration:none;color:var(--muted)}
+@media(max-width:740px){main{margin:0;padding:24px 18px;border:0;border-radius:0}h1{font-size:1.7rem}.diagram{padding:8px}}
+@media print{header,details,.headerlink{display:none}body,main{background:#fff;color:#000;border:0;margin:0;padding:0}a{color:#000}.diagram,pre{break-inside:avoid}}
+</style></head><body><header>Engineering documentation · <a href="development.md">Markdown source</a></header><main><!-- ayu-maintenance-2026-10-12 -->
+<h1 id="current-uv-development-workflow">Current uv development workflow<a class="headerlink" href="#current-uv-development-workflow" title="Permanent link">&para;</a></h1>
+<p>The maintained branch is <code>feature/ayu_develop</code>. The selected interpreter is Python <code>3.14</code>; <code>requires-python</code> records the range that was actually resolved. Python 3.15 was attempted first. Dependency/native-wheel failures and fallback evidence are recorded in <a href="validation.md">validation.md</a>.</p>
+<pre><code class="language-sh">export UV_PYTHON_PREFERENCE=only-managed
+uv python install 3.14
+uv lock --check
+uv sync --frozen --all-extras --all-groups
+uv run --no-sync python -m compileall -q src
+uv build
+uv run --no-sync python -m pytest
+</code></pre>
+<p>Use <code>uv lock --upgrade</code> when intentionally refreshing dependencies, then review <code>pyproject.toml</code>, <code>uv.lock</code>, and the existing full test suite. The dependency floors were refreshed from current PyPI release metadata while preserving meaningful upstream upper bounds. Compatibility exceptions are documented with their resolver/test evidence rather than hidden by disabling tests.</p>
+<p>The <code>src/</code> layout and build-backend package discovery preserve public import names. Wheel/sdist resources include the source-associated data and templates. Optional vendor SDKs, live credentials, databases and graphical/native libraries retain their original runtime requirements. Examples and test fixtures are not promoted into the library API.</p>
+<!-- prior-development-notes -->
+
+<h2 id="compatibility-decisions">Compatibility decisions<a class="headerlink" href="#compatibility-decisions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The upstream graph/vendor/CLI refactor is retained under src. Setuptools dynamic version metadata matches the existing version test and ships CLI assets.</li>
+<li>Cache retry uses the portable EDEADLK errno alias; existing errno and i18n path cases were updated without adding cases.</li>
+<li>Python 3.15 actual source build rejects ormsgpack 1.12.2: its PyO3 0.27.2 declares maximum Python 3.14.</li>
+</ul>
+<h1 id="tradingagents-development-guide">TradingAgents -- Development Guide<a class="headerlink" href="#tradingagents-development-guide" title="Permanent link">&para;</a></h1>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">pip install tradingagents
+</code></pre>
+<h3 id="from-source">From Source<a class="headerlink" href="#from-source" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">git clone https://github.com/TradingAgents-AI/TradingAgents.git
+cd TradingAgents
+pip install -e .
+</code></pre>
+<h3 id="api-keys">API Keys<a class="headerlink" href="#api-keys" title="Permanent link">&para;</a></h3>
+<p>Set environment variables for your LLM and data providers:</p>
+<pre><code class="language-bash"># LLM Providers (choose one or more)
+export OPENAI_API_KEY=&quot;...&quot;
+export ANTHROPIC_API_KEY=&quot;...&quot;
+export GOOGLE_API_KEY=&quot;...&quot;
+
+# Data Providers (optional, yfinance is free)
+export ALPHA_VANTAGE_API_KEY=&quot;...&quot;
+</code></pre>
+<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<h3 id="simple-trading-decision">Simple Trading Decision<a class="headerlink" href="#simple-trading-decision" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">from tradingagents.graph.trading_graph import TradingAgentsGraph
+
+# Create with default config (OpenAI + yfinance)
+graph = TradingAgentsGraph()
+
+# Get trading decision for a company on a date
+final_state, signal = graph.propagate(&quot;AAPL&quot;, &quot;2024-01-15&quot;)
+
+print(f&quot;Signal: {signal}&quot;)  # BUY, SELL, or HOLD
+print(f&quot;Decision: {final_state['final_trade_decision']}&quot;)
+</code></pre>
+<h3 id="custom-configuration">Custom Configuration<a class="headerlink" href="#custom-configuration" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">from tradingagents.graph.trading_graph import TradingAgentsGraph
+
+config = {
+    &quot;llm_provider&quot;: &quot;anthropic&quot;,
+    &quot;deep_think_llm&quot;: &quot;claude-sonnet-4-20250514&quot;,
+    &quot;quick_think_llm&quot;: &quot;claude-haiku-4-20250414&quot;,
+    &quot;max_debate_rounds&quot;: 2,
+    &quot;max_risk_discuss_rounds&quot;: 2,
+    &quot;data_vendors&quot;: {
+        &quot;core_stock_apis&quot;: &quot;yfinance&quot;,
+        &quot;technical_indicators&quot;: &quot;yfinance&quot;,
+        &quot;fundamental_data&quot;: &quot;alpha_vantage&quot;,
+        &quot;news_data&quot;: &quot;yfinance&quot;,
+    },
+    &quot;output_language&quot;: &quot;English&quot;,
+}
+
+graph = TradingAgentsGraph(config=config)
+final_state, signal = graph.propagate(&quot;MSFT&quot;, &quot;2024-03-01&quot;)
+</code></pre>
+<h3 id="select-specific-analysts">Select Specific Analysts<a class="headerlink" href="#select-specific-analysts" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python"># Only use market and fundamentals analysts (skip social/news)
+graph = TradingAgentsGraph(
+    selected_analysts=[&quot;market&quot;, &quot;fundamentals&quot;],
+    debug=True,  # Print agent outputs
+)
+
+final_state, signal = graph.propagate(&quot;TSLA&quot;, &quot;2024-06-15&quot;)
+</code></pre>
+<h3 id="multi-day-simulation">Multi-Day Simulation<a class="headerlink" href="#multi-day-simulation" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">from datetime import date, timedelta
+
+graph = TradingAgentsGraph()
+results = []
+
+start = date(2024, 1, 1)
+for i in range(30):
+    trade_date = start + timedelta(days=i)
+    if trade_date.weekday() &lt; 5:  # Skip weekends
+        state, signal = graph.propagate(&quot;AAPL&quot;, str(trade_date))
+        results.append({
+            &quot;date&quot;: str(trade_date),
+            &quot;signal&quot;: signal,
+            &quot;decision&quot;: state[&quot;final_trade_decision&quot;],
+        })
+
+# Results include memory-informed decisions
+</code></pre>
+<h3 id="reflection">Reflection<a class="headerlink" href="#reflection" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">graph = TradingAgentsGraph()
+state, signal = graph.propagate(&quot;NVDA&quot;, &quot;2024-02-15&quot;)
+
+# Reflect on the decision
+reflection = graph.reflect()
+print(reflection)
+</code></pre>
+<h2 id="configuration-reference">Configuration Reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h2>
+<h3 id="llm-settings">LLM Settings<a class="headerlink" href="#llm-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm_provider</code></td>
+<td>str</td>
+<td><code>"openai"</code>, <code>"anthropic"</code>, <code>"google"</code></td>
+<td><code>"openai"</code></td>
+</tr>
+<tr>
+<td><code>deep_think_llm</code></td>
+<td>str</td>
+<td>Model name</td>
+<td><code>"gpt-5.4"</code></td>
+</tr>
+<tr>
+<td><code>quick_think_llm</code></td>
+<td>str</td>
+<td>Model name</td>
+<td><code>"gpt-5.4-mini"</code></td>
+</tr>
+<tr>
+<td><code>backend_url</code></td>
+<td>str</td>
+<td>API endpoint</td>
+<td><code>"https://api.openai.com/v1"</code></td>
+</tr>
+<tr>
+<td><code>google_thinking_level</code></td>
+<td>str</td>
+<td><code>"high"</code>, <code>"minimal"</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>openai_reasoning_effort</code></td>
+<td>str</td>
+<td><code>"high"</code>, <code>"medium"</code>, <code>"low"</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>anthropic_effort</code></td>
+<td>str</td>
+<td><code>"high"</code>, <code>"medium"</code>, <code>"low"</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="debate-settings">Debate Settings<a class="headerlink" href="#debate-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_debate_rounds</code></td>
+<td>int</td>
+<td>1</td>
+<td>Max rounds for bull/bear research debate</td>
+</tr>
+<tr>
+<td><code>max_risk_discuss_rounds</code></td>
+<td>int</td>
+<td>1</td>
+<td>Max rounds for risk management debate</td>
+</tr>
+<tr>
+<td><code>max_recur_limit</code></td>
+<td>int</td>
+<td>100</td>
+<td>LangGraph maximum recursion limit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-vendor-settings">Data Vendor Settings<a class="headerlink" href="#data-vendor-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Options</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_vendors.core_stock_apis</code></td>
+<td><code>"yfinance"</code>, <code>"alpha_vantage"</code></td>
+<td><code>"yfinance"</code></td>
+</tr>
+<tr>
+<td><code>data_vendors.technical_indicators</code></td>
+<td><code>"yfinance"</code>, <code>"alpha_vantage"</code></td>
+<td><code>"yfinance"</code></td>
+</tr>
+<tr>
+<td><code>data_vendors.fundamental_data</code></td>
+<td><code>"yfinance"</code>, <code>"alpha_vantage"</code></td>
+<td><code>"yfinance"</code></td>
+</tr>
+<tr>
+<td><code>data_vendors.news_data</code></td>
+<td><code>"yfinance"</code>, <code>"alpha_vantage"</code></td>
+<td><code>"yfinance"</code></td>
+</tr>
+</tbody>
+</table>
+<p>Per-tool overrides via <code>tool_vendors</code>:</p>
+<pre><code class="language-python">config[&quot;tool_vendors&quot;] = {
+    &quot;get_stock_data&quot;: &quot;alpha_vantage&quot;,  # Override category default
+}
+</code></pre>
+<h2 id="adding-a-new-analyst">Adding a New Analyst<a class="headerlink" href="#adding-a-new-analyst" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Create agent file in <code>src/tradingagents/agents/analysts/</code>:</li>
+</ol>
+<pre><code class="language-python"># agents/analysts/custom_analyst.py
+def create_custom_analyst(llm):
+    def custom_analyst(state):
+        # Access state data
+        company = state[&quot;company_of_interest&quot;]
+        date = state[&quot;trade_date&quot;]
+
+        # Use LLM with tools to generate analysis
+        response = llm.invoke(f&quot;Analyze {company} as of {date}&quot;)
+
+        return {&quot;custom_report&quot;: response.content}
+    return custom_analyst
+</code></pre>
+<ol start="2">
+<li>Add tool node in <code>src/tradingagents/graph/trading_graph.py</code></li>
+<li>Register in <code>src/tradingagents/graph/setup.py</code></li>
+</ol>
+<h2 id="adding-a-new-data-vendor">Adding a New Data Vendor<a class="headerlink" href="#adding-a-new-data-vendor" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Implement data functions in <code>src/tradingagents/dataflows/</code>:</li>
+</ol>
+<pre><code class="language-python"># dataflows/custom_vendor.py
+def get_stock_data_custom(ticker, date):
+    # Fetch data from custom source
+    return formatted_data
+</code></pre>
+<ol start="2">
+<li>Register in <code>src/tradingagents/dataflows/interface.py</code></li>
+<li>Add to <code>data_vendors</code> config options</li>
+</ol>
+<h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
+<pre><code>tradingagents/
+    agents/
+        analysts/       # Market, Social, News, Fundamentals analysts
+        researchers/    # Bull and Bear researchers
+        managers/       # Research Manager, Portfolio Manager
+        risk_mgmt/      # Aggressive, Conservative, Neutral debators
+        trader/         # Trader agent
+        utils/          # Agent states, memory, tools
+    dataflows/          # Data vendor implementations and interface
+    graph/              # LangGraph setup, propagation, reflection
+    llm_clients/        # Multi-provider LLM client factory
+</code></pre>
+<h2 id="important-notes">Important Notes<a class="headerlink" href="#important-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Each <code>propagate()</code> call runs the full agent pipeline (can take 30-120s depending on LLM)</li>
+<li>Memory persists across calls -- agents learn from previous analyses</li>
+<li>Debug mode (<code>debug=True</code>) prints all agent outputs for inspection</li>
+<li>Data is cached in <code>src/tradingagents/dataflows/data_cache/</code> to avoid redundant API calls</li>
+<li>The system expects trading days only -- skip weekends/holidays</li>
+<li>Internal debate always uses English for reasoning quality; output language is configurable</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="openaiauthenticationerror-or-anthropicauthenticationerror"><code>openai.AuthenticationError</code> or <code>anthropic.AuthenticationError</code><a class="headerlink" href="#openaiauthenticationerror-or-anthropicauthenticationerror" title="Permanent link">&para;</a></h3>
+<p>The LLM API key is missing or invalid. Set the correct environment variable: <code>OPENAI_API_KEY</code> for OpenAI, <code>ANTHROPIC_API_KEY</code> for Anthropic, <code>GOOGLE_API_KEY</code> for Google. Verify the key is active and has sufficient quota.</p>
+<h3 id="propagate-takes-60-seconds"><code>propagate()</code> takes 60+ seconds<a class="headerlink" href="#propagate-takes-60-seconds" title="Permanent link">&para;</a></h3>
+<p>Each call runs the full agent pipeline (analysts, researchers, debaters, trader, portfolio manager). Reduce latency by selecting fewer analysts (<code>selected_analysts=["market"]</code>), lowering <code>max_debate_rounds</code> to 1, or using faster models like <code>gpt-4o-mini</code>.</p>
+<h3 id="recursionerror-or-max_recur_limit-exceeded"><code>RecursionError</code> or <code>max_recur_limit</code> exceeded<a class="headerlink" href="#recursionerror-or-max_recur_limit-exceeded" title="Permanent link">&para;</a></h3>
+<p>LangGraph hit the recursion limit during graph execution. Increase <code>max_recur_limit</code> in the config (default: 100). This usually indicates too many debate rounds -- reduce <code>max_debate_rounds</code> and <code>max_risk_discuss_rounds</code>.</p>
+<h3 id="yfinance-returns-empty-data-or-none"><code>yfinance</code> returns empty data or <code>None</code><a class="headerlink" href="#yfinance-returns-empty-data-or-none" title="Permanent link">&para;</a></h3>
+<p>yfinance relies on Yahoo Finance which can be unreliable. Verify the ticker symbol exists and the date is a valid trading day (not a weekend or holiday). Data is cached in <code>dataflows/data_cache/</code> -- delete the cache directory to force a fresh fetch.</p>
+<h3 id="keyerror-final_trade_decision-in-returned-state"><code>KeyError: 'final_trade_decision'</code> in returned state<a class="headerlink" href="#keyerror-final_trade_decision-in-returned-state" title="Permanent link">&para;</a></h3>
+<p>The agent pipeline did not complete successfully. Enable <code>debug=True</code> to see which agent failed. This commonly happens when the LLM returns an unexpected format. Check that your model supports tool calling (required for analyst agents).</p>
+<h3 id="alpha_vantage-rate-limiting-5-callsminute-on-free-tier"><code>alpha_vantage</code> rate limiting (5 calls/minute on free tier)<a class="headerlink" href="#alpha_vantage-rate-limiting-5-callsminute-on-free-tier" title="Permanent link">&para;</a></h3>
+<p>Alpha Vantage's free tier allows only 5 API calls per minute. The framework makes multiple data calls per propagation. Either use a premium key, switch <code>data_vendors</code> to <code>"yfinance"</code> (no rate limit), or add delays between <code>propagate()</code> calls.</p>
+<h3 id="memory-grows-across-multiple-propagate-calls">Memory grows across multiple <code>propagate()</code> calls<a class="headerlink" href="#memory-grows-across-multiple-propagate-calls" title="Permanent link">&para;</a></h3>
+<p><code>FinancialSituationMemory</code> accumulates context across calls (by design). For long simulations, this increases prompt length and cost. There is no built-in memory pruning -- consider creating a fresh <code>TradingAgentsGraph</code> instance periodically.</p>
+<h3 id="google-gemini-models-return-empty-or-malformed-responses">Google Gemini models return empty or malformed responses<a class="headerlink" href="#google-gemini-models-return-empty-or-malformed-responses" title="Permanent link">&para;</a></h3>
+<p>Set <code>google_thinking_level</code> to <code>"high"</code> in the config for complex analysis tasks. The <code>"minimal"</code> level may produce truncated responses for multi-step reasoning.</p>
+<h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>API key management</strong>: LLM provider keys (<code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, <code>GOOGLE_API_KEY</code>) and data provider keys (<code>ALPHA_VANTAGE_API_KEY</code>) should be set via environment variables, not in code or config files. These keys provide billable API access.</li>
+<li><strong>Cost controls</strong>: Each <code>propagate()</code> call makes 10-15 LLM API calls. Set up spending limits with your LLM provider. Monitor token usage via LangGraph callbacks (pass <code>callbacks</code> parameter to <code>TradingAgentsGraph</code>). Use <code>quick_think_llm</code> (cheaper model) for non-critical agents.</li>
+<li><strong>Data cache security</strong>: Market data is cached locally in <code>dataflows/data_cache/</code>. This directory may contain financial data subject to redistribution restrictions. Do not share or commit cache files to public repositories.</li>
+<li><strong>Prompt injection risk</strong>: Financial news and social media data are fed directly into LLM prompts. Adversarial content in news articles or social posts could influence agent reasoning. Do not use agent signals for automated trading without human review.</li>
+<li><strong>No trade execution</strong>: TradingAgents produces BUY/SELL/HOLD signals but does not execute trades. The framework has no broker integration. Treat signals as research input, not trading instructions.</li>
+<li><strong>Memory persistence</strong>: <code>FinancialSituationMemory</code> stores analysis context on disk. This may contain proprietary analysis or sensitive financial opinions. Secure the <code>results_dir</code> directory and clean up after simulation runs.</li>
+<li><strong>Backend URL configuration</strong>: The <code>backend_url</code> config parameter allows routing LLM calls to custom endpoints (e.g., Azure OpenAI, local models). Verify the endpoint uses HTTPS and belongs to a trusted provider. Do not route through untrusted proxies.</li>
+</ul>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="README.md">README</a> — Project overview and quick start</li>
+<li><a href="architecture.md">Architecture</a> — System design and components</li>
+<li><a href="workflow.md">Workflow</a> — Event flows and processing pipelines</li>
+<li><a href="state-management.md">State Management</a> — State lifecycle and data models</li>
+</ul></main>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,securityLevel:'strict',theme:'default',flowchart:{useMaxWidth:true},sequence:{useMaxWidth:true}});
+</script></body></html>
