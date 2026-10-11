@@ -150,20 +150,20 @@ Unsuccessful rows are retained as historical compatibility attempts; they are no
 
 | Command | Exit | Seconds | Evidence |
 |---|---:|---:|---|
-| `uv lock --upgrade --python 3.15` | 0 | 1.48 | [log](../../docs/maintenance-2026-10-12/TradingAgents-lock-3.15.log) |
-| `uv sync --all-extras --all-groups --python 3.15 --no-build --no-install-project` | 2 | 3.38 | [log](../../docs/maintenance-2026-10-12/TradingAgents-wheel-probe-3.15.log) |
-| `uv lock --upgrade --python 3.14` | 0 | 2.28 | [log](../../docs/maintenance-2026-10-12/TradingAgents-lock-3.14.log) |
-| `uv sync --all-extras --all-groups --python 3.14 --no-build --no-install-project` | 0 | 0.56 | [log](../../docs/maintenance-2026-10-12/TradingAgents-wheel-probe-3.14.log) |
-| `uv sync --all-extras --all-groups --python 3.14` | 0 | 1.21 | [log](../../docs/maintenance-2026-10-12/TradingAgents-sync-3.14.log) |
-| `uv build --python 3.14` | 0 | 5.81 | [log](../../docs/maintenance-2026-10-12/TradingAgents-build.log) |
-| `/Users/alex/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14 -m compileall -q src` | 0 | 0.3 | [log](../../docs/maintenance-2026-10-12/TradingAgents-compile.log) |
-| `uv run --no-sync python -m pytest` | 0 | 37.1 | [log](../../docs/maintenance-2026-10-12/TradingAgents-tests.log) |
-| `uv run --no-sync python -m compileall -q src` | 0 | 0.13 | [log](../../docs/maintenance-2026-10-12/TradingAgents-compile-final.log) |
-| `uv build --python 3.14` | 0 | 2.15 | [log](../../docs/maintenance-2026-10-12/TradingAgents-build-final.log) |
-| `uv run --no-sync python -c import sys,importlib.metadata,json; print(sys.version); print(json.dumps({d.metadata["Name"]: d.version for d in importlib.metadata.distributions()},indent=2,sort_keys=True))` | 0 | 0.19 | [log](../../docs/maintenance-2026-10-12/TradingAgents-versions-final.log) |
-| `uv sync --directory /tmp/trading-python315-probes/TradingAgents --all-extras --all-groups --python 3.15` | 1 | 36.06 | [log](../../docs/maintenance-2026-10-12/TradingAgents-python315-source-probe.log) |
+| `uv lock --upgrade --python 3.15` | 0 | 1.48 | [check record](maintenance/index.html) |
+| `uv sync --all-extras --all-groups --python 3.15 --no-build --no-install-project` | 2 | 3.38 | [check record](maintenance/index.html) |
+| `uv lock --upgrade --python 3.14` | 0 | 2.28 | [check record](maintenance/index.html) |
+| `uv sync --all-extras --all-groups --python 3.14 --no-build --no-install-project` | 0 | 0.56 | [check record](maintenance/index.html) |
+| `uv sync --all-extras --all-groups --python 3.14` | 0 | 1.21 | [check record](maintenance/index.html) |
+| `uv build --python 3.14` | 0 | 5.81 | [check record](maintenance/index.html) |
+| `/Users/alex/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14 -m compileall -q src` | 0 | 0.3 | [check record](maintenance/index.html) |
+| `uv run --no-sync python -m pytest` | 0 | 37.1 | [check record](maintenance/index.html) |
+| `uv run --no-sync python -m compileall -q src` | 0 | 0.13 | [check record](maintenance/index.html) |
+| `uv build --python 3.14` | 0 | 2.15 | [check record](maintenance/index.html) |
+| `uv run --no-sync python -c import sys,importlib.metadata,json; print(sys.version); print(json.dumps({d.metadata["Name"]: d.version for d in importlib.metadata.distributions()},indent=2,sort_keys=True))` | 0 | 0.19 | [check record](maintenance/index.html) |
+| `uv sync --directory /tmp/trading-python315-probes/TradingAgents --all-extras --all-groups --python 3.15` | 1 | 36.06 | [check record](maintenance/index.html) |
 
-The versions-final log records the exact interpreter patch release and every installed dependency version. The machine-readable [result](../../docs/maintenance-2026-10-12/TradingAgents-result.json) includes branch/default ancestry, status, artifacts and unresolved checks.
+The versions-final log records the exact interpreter patch release and every installed dependency version. The machine-readable [verification record](maintenance/verification.json) includes branch/default ancestry, status, artifacts and unresolved checks.
 
 ## Dependency floor refresh
 

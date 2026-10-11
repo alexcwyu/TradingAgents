@@ -1,0 +1,175 @@
+{
+  "repository": "TradingAgents",
+  "source_commit_before_documentation_commit": "f7e78274888d67c8cec6fa66c867234d427c8bea",
+  "recorded_on": "2026-10-12",
+  "records": [
+    {
+      "command": "uv build --python 3.14",
+      "exit_code": 0,
+      "seconds": 5.81,
+      "check": "build",
+      "original_log": "TradingAgents-build.log",
+      "log_sha256": "2bcdb5a4e361a153df26c38f6e12204137c7027768f46f2a9f1c58159406f4fa",
+      "outcomes": [
+        "Successfully built dist/tradingagents-0.6.0.tar.gz",
+        "Successfully built dist/tradingagents-0.6.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "command": "uv build --python 3.14",
+      "exit_code": 0,
+      "seconds": 2.15,
+      "check": "build-final",
+      "original_log": "TradingAgents-build-final.log",
+      "log_sha256": "29615690f7050bed10948ae5f82eacfe9f0164001b2b0dd02ebf072f7f682b19",
+      "outcomes": [
+        "Successfully built dist/tradingagents-0.6.0.tar.gz",
+        "Successfully built dist/tradingagents-0.6.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "command": "/Users/alex/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14 -m compileall -q src",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "check": "compile",
+      "original_log": "TradingAgents-compile.log",
+      "log_sha256": "cdad8d31f71f9ca30ecb973875a31a35e82562441812821f059e0f67f0cb87cf",
+      "outcomes": []
+    },
+    {
+      "command": "uv run --no-sync python -m compileall -q src",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "check": "compile-final",
+      "original_log": "TradingAgents-compile-final.log",
+      "log_sha256": "18836bd061fd2cbbcee4cfbe11a0c5bb8956a47a78decc98b17bdc695bd896a7",
+      "outcomes": []
+    },
+    {
+      "command": "uv lock --upgrade --python 3.14",
+      "exit_code": 0,
+      "seconds": 2.28,
+      "check": "lock-3.14",
+      "original_log": "TradingAgents-lock-3.14.log",
+      "log_sha256": "0e20a9b4901614fed0e764b86cc955f90561c0358276aa73128a2423e987f664",
+      "outcomes": []
+    },
+    {
+      "command": "uv lock --upgrade --python 3.15",
+      "exit_code": 0,
+      "seconds": 1.48,
+      "check": "lock-3.15",
+      "original_log": "TradingAgents-lock-3.15.log",
+      "log_sha256": "253eb3da492d3c7552e9ce95f34babf5f431e8dd7abf99fb58d205b301939dd7",
+      "outcomes": []
+    },
+    {
+      "command": "uv sync --directory /tmp/trading-python315-probes/TradingAgents --all-extras --all-groups --python 3.15",
+      "exit_code": 1,
+      "seconds": 36.06,
+      "check": "python315-source-probe",
+      "original_log": "TradingAgents-python315-source-probe.log",
+      "log_sha256": "47c7d387ef058174d9f92499babec54588fee42fb1ffcb27b92d966a07bfefb6",
+      "outcomes": []
+    },
+    {
+      "command": "uv sync --all-extras --all-groups --python 3.14",
+      "exit_code": 0,
+      "seconds": 1.21,
+      "check": "sync-3.14",
+      "original_log": "TradingAgents-sync-3.14.log",
+      "log_sha256": "74264536c4d4a51a14a1cbfd66d7142b64a727cb27f5648cf1ba3518c4d47020",
+      "outcomes": []
+    },
+    {
+      "command": "uv run --no-sync python -m pytest",
+      "exit_code": 0,
+      "seconds": 37.1,
+      "check": "tests",
+      "original_log": "TradingAgents-tests.log",
+      "log_sha256": "85339cfe1a6bd753a83daa99eea7f8706cb342473c53e436d23284e12954bed6",
+      "outcomes": [
+        "================ 1263 passed, 1 skipped, 20 warnings in 25.97s ================="
+      ]
+    },
+    {
+      "command": "uv run --no-sync python -c import sys,importlib.metadata,json; print(sys.version); print(json.dumps({d.metadata[\"Name\"]: d.version for d in importlib.metadata.distributions()},indent=2,sort_keys=True))",
+      "exit_code": 0,
+      "seconds": 0.19,
+      "check": "versions-final",
+      "original_log": "TradingAgents-versions-final.log",
+      "log_sha256": "fc8e8f366349f18d44ea2e7746045bca4dd93f0623940c1b83f9951fee2eabc4",
+      "outcomes": []
+    },
+    {
+      "command": "uv sync --all-extras --all-groups --python 3.14 --no-build --no-install-project",
+      "exit_code": 0,
+      "seconds": 0.56,
+      "check": "wheel-probe-3.14",
+      "original_log": "TradingAgents-wheel-probe-3.14.log",
+      "log_sha256": "5540fb90bf119dfb80359c899aff13382ca5766c06ba331ebac5cada24996d92",
+      "outcomes": []
+    },
+    {
+      "command": "uv sync --all-extras --all-groups --python 3.15 --no-build --no-install-project",
+      "exit_code": 2,
+      "seconds": 3.38,
+      "check": "wheel-probe-3.15",
+      "original_log": "TradingAgents-wheel-probe-3.15.log",
+      "log_sha256": "2777ddea5ab91d940b9de1921665a9541b2e137bb5bae760d6529ba238e03199",
+      "outcomes": []
+    }
+  ],
+  "summary": {
+    "repo": "TradingAgents",
+    "branch": "feature/ayu_develop",
+    "blockers": [],
+    "started": "2026-10-12T00:14:03+0800",
+    "dependency_updates": [
+      {
+        "from": "setuptools>=80.9.0",
+        "to": "setuptools>=84.0.0"
+      },
+      {
+        "from": "wheel>=0.45.1",
+        "to": "wheel>=0.48.0"
+      }
+    ],
+    "lock": "passed",
+    "python": "3.14",
+    "sync": "passed",
+    "build": "passed",
+    "compile": "passed",
+    "tests": "passed",
+    "test_summary": "....                         [ 55%]\ntests/test_openai_reasoning_effort.py .................                  [ 56%]\ntests/test_openrouter_model_select.py ..........                         [ 57%]\ntests/test_polymarket.py ........                                        [ 58%]\ntests/test_portfolio_context.py ....................                     [ 59%]\ntests/test_post_screen.py ..............................                 [ 62%]\ntests/test_prompt_integrity.py .............                             [ 63%]\ntests/test_provider_registry.py .................                        [ 64%]\ntests/test_rating_integrity.py ......................................... [ 67%]\n..................                                                       [ 69%]\ntests/test_reddit_fallback.py .................................          [ 71%]\ntests/test_report_html.py ..............                                 [ 73%]\ntests/test_reporting.py ..........                                       [ 73%]\ntests/test_risk_router_path_map.py ..................                    [ 75%]\ntests/test_safe_ticker_component.py ........                             [ 75%]\ntests/test_sec_edgar.py ........................                         [ 77%]\ntests/test_signal_processing.py .............                            [ 78%]\ntests/test_social_lookahead.py ...............                           [ 79%]\ntests/test_statement_knowledge_time.py ..........                        [ 80%]\ntests/test_stocktwits_resilience.py ................                     [ 82%]\ntests/test_structured_agent_prompts.py .......                           [ 82%]\ntests/test_structured_agents.py ........................................ [ 85%]\n..                                                                       [ 85%]\ntests/test_suite_isolation.py .........                                  [ 86%]\ntests/test_symbol_normalization_paths.py ...                             [ 86%]\ntests/test_symbols.py ..................                                 [ 88%]\ntests/test_temperature_config.py ...........                             [ 89%]\ntests/test_ticker_symbol_handling.py ...                                 [ 89%]\ntests/test_tier_providers.py .....                                       [ 89%]\ntests/test_tool_date_enforcement.py .................................... [ 92%]\n.....                                                                    [ 93%]\ntests/test_undated_tools_as_of.py ........................               [ 94%]\ntests/test_vendor_errors.py .......                                      [ 95%]\ntests/test_vendor_routing.py .......                                     [ 96%]\ntests/test_version.py .                                                  [ 96%]\ntests/test_yahoo_rate_limit.py .....................................     [ 99%]\ntests/test_yahoo_snapshot.py ......                                      [ 99%]\ntests/test_yfinance_stale_ohlcv_guard.py ......                          [100%]\n\n=============================== warnings summary ===============================\ntests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-haiku-5-0]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-haiku-5-0' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-haiku-4-7-preview]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-haiku-4-7-preview' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-sonnet-4-5]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-4-5' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_unsupported_models_do_not_receive_effort[claude-sonnet-4-0]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-4-0' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_current_opus_and_sonnet_receive_effort[claude-opus-4-5]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-opus-4-5' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_current_opus_and_sonnet_receive_effort[claude-opus-4-6]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-opus-4-6' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_current_opus_and_sonnet_receive_effort[claude-sonnet-4-6]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-4-6' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_future_opus_sonnet_inherit_effort_via_pattern[claude-opus-5-0]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-opus-5-0' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_future_opus_sonnet_inherit_effort_via_pattern[claude-sonnet-5-0]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-sonnet-5-0' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_claude_5_family_receives_effort[claude-mythos-5]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-mythos-5' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_mythos_preview_receives_effort\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-mythos-preview' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_anthropic_effort.py::TestEffortGate::test_unknown_anthropic_model_does_not_receive_effort\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/anthropic_client.py:61: RuntimeWarning: Model 'claude-experimental-x' is not in the known model list for provider 'anthropic'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_google_thinking_level.py::test_latest_alias_remaps_minimal_to_low[gemini-flash-latest]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/google_client.py:46: RuntimeWarning: Model 'gemini-flash-latest' is not in the known model list for provider 'google'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_google_thinking_level.py::test_latest_alias_remaps_minimal_to_low[gemini-pro-latest]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/google_client.py:46: RuntimeWarning: Model 'gemini-pro-latest' is not in the known model list for provider 'google'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_ollama_base_url.py::test_resolver_does_not_affect_other_providers\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'm' is not in the known model list for provider 'xai'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_ollama_base_url.py::test_resolver_does_not_affect_other_providers\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'm' is not in the known model list for provider 'deepseek'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_openai_reasoning_effort.py::test_non_reasoning_model_drops_effort\ntests/test_temperature_config.py::TestTemperatureForwarding::test_temperature_reaches_client_when_set[openai-gpt-4.1]\ntests/test_temperature_config.py::TestTemperatureForwarding::test_temperature_omitted_leaves_provider_default\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'gpt-4.1' is not in the known model list for provider 'openai'. Continuing anyway.\n    self.warn_if_unknown_model()\n\ntests/test_temperature_config.py::TestTemperatureForwarding::test_temperature_reaches_client_when_set[deepseek-deepseek-chat]\n  <workspace>/TradingAgents/src/tradingagents/llm_clients/openai_client.py:279: RuntimeWarning: Model 'deepseek-chat' is not in the known model list for provider 'deepseek'. Continuing anyway.\n    self.warn_if_unknown_model()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nSKIPPED [1] tests/test_deepseek_reasoning.py:209: DEEPSEEK_API_KEY not set (or placeholder); skipping live API call\n================ 1263 passed, 1 skipped, 20 warnings in 25.97s =================\n",
+    "finished": "2026-10-12T00:14:58+0800",
+    "head": "f7e78274888d67c8cec6fa66c867234d427c8bea",
+    "notes": [
+      "The upstream graph/vendor/CLI refactor is retained under src. Setuptools dynamic version metadata matches the existing version test and ships CLI assets.",
+      "Cache retry uses the portable EDEADLK errno alias; existing errno and i18n path cases were updated without adding cases.",
+      "Python 3.15 actual source build rejects ormsgpack 1.12.2: its PyO3 0.27.2 declares maximum Python 3.14."
+    ],
+    "python_version": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+    "failed_attempts": [
+      {
+        "python": "3.15",
+        "stage": "native wheel probe",
+        "details": "$ uv sync --all-extras --all-groups --python 3.15 --no-build --no-install-project\nUsing CPython 3.15.0\nRemoved virtual environment at: .venv\nCreating virtual environment at: .venv\nResolved 99 packages in 8ms\nerror: Distribution `pyyaml==6.0.3 @ registry+https://pypi.org/simple` can't be installed because it is marked as `--no-build` but has no binary distribution\n"
+      }
+    ],
+    "unresolved_blockers": [],
+    "default_ancestry": {
+      "refs/remotes/origin/main": true
+    },
+    "merge_in_progress": false,
+    "artifact_files": [
+      "dist/.gitignore",
+      "dist/tradingagents-0.6.0.tar.gz",
+      "dist/tradingagents-0.6.0-py3-none-any.whl"
+    ],
+    "committed": true,
+    "pushed": false,
+    "worktree_status": "?? .DS_Store\n"
+  },
+  "note": "Full raw logs are retained in the workspace maintenance evidence, not distributed here. Hashes identify those original logs. A successful build or selected test subset does not imply a full test-suite pass. Commands containing <workspace> describe the original execution environment."
+}
