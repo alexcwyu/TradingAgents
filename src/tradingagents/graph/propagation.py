@@ -1,11 +1,6 @@
-# TradingAgents/graph/propagation.py
+from typing import Any
 
-from typing import Dict, Any, List, Optional
-from tradingagents.agents.utils.agent_states import (
-    AgentState,
-    InvestDebateState,
-    RiskDebateState,
-)
+from tradingagents.agents.state import InvestDebateState, RiskDebateState
 
 
 class Propagator:
@@ -22,7 +17,8 @@ class Propagator:
         asset_type: str = "stock",
         past_context: str = "",
         instrument_context: str = "",
-    ) -> Dict[str, Any]:
+        portfolio_context: str = "",
+    ) -> dict[str, Any]:
         """Create the initial state for the agent graph.
 
         ``instrument_context`` is the deterministic ticker-identity string
@@ -38,13 +34,14 @@ class Propagator:
             "instrument_context": instrument_context,
             "trade_date": str(trade_date),
             "past_context": past_context,
+            "memory_note": "",
+            "portfolio_context": portfolio_context,
             "investment_debate_state": InvestDebateState(
                 {
                     "bull_history": "",
                     "bear_history": "",
                     "history": "",
                     "current_response": "",
-                    "judge_decision": "",
                     "count": 0,
                 }
             ),
@@ -58,7 +55,6 @@ class Propagator:
                     "current_aggressive_response": "",
                     "current_conservative_response": "",
                     "current_neutral_response": "",
-                    "judge_decision": "",
                     "count": 0,
                 }
             ),
@@ -68,7 +64,7 @@ class Propagator:
             "news_report": "",
         }
 
-    def get_graph_args(self, callbacks: Optional[List] = None) -> Dict[str, Any]:
+    def get_graph_args(self, callbacks: list | None = None) -> dict[str, Any]:
         """Get arguments for the graph invocation.
 
         Args:
